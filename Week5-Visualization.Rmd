@@ -1,0 +1,111 @@
+---
+title: "Week5-Visualization Activity"
+author: "Shanmugapriya Mohan Kumar"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(ggplot2)
+library(dplyr)  # for data manipulation
+library(lubridate)  # for date handling
+library(tidyr)
+```
+
+``` {r load-data, echo=TRUE}
+# Dataset URL
+spy_data <- "https://raw.githubusercontent.com/ShanmugapriyaMohankumar/StockMarket/main/SPY.csv"
+
+# Read the dataset from the URL
+spy500_data <- read_csv(spy_data,show_col_types = FALSE) #read_csv is part of the readr package, which is included in the tidyverse collection of R packages
+
+#display the first few rows
+head(spy500_data)
+
+# Convert Date column to Date type
+spy500_data$Date <- as.Date(spy500_data$Date)
+
+#display the first few rows of the dataframe
+head(spy500_data)
+
+#Number of rows in the original dataset
+spy500_data_row_count <- nrow(spy500_data)
+
+```
+
+
+### Visualization
+
+***HISTOGRAM***
+
+```{r histogram, echo=TRUE}
+ggplot(spy500_data, aes(x = Close)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black") +
+  labs(title = "Histogram of Closing Prices",
+       x = "Closing Price",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+
+### Histogram Of closing prices
+
+The histogram shows the closing prices for SPY over the observed period.The data is divided into intervals, each representing a range of closing prices.The height of each bar indicates how many times the closing prices fell within each bin(interval).The tallest bars represent the price ranges where SPY closed most frequently. This helps in identifying the central tendency of the data. The shape of the histogram can indicate whether the data is normally distributed, skewed, or has multiple peaks. Bars that are isolated from the main cluster can indicate outliers, where the closing price was significantly higher or lower than usual.
+
+
+Example: If the histogram shows a peak around $420 to $430, it suggests that SPY often closed within this range. If there is a tail extending to higher prices, then it indicates bullish market sentiment because it suggests that buyers were able to push the price higher, even if it didn't close there frequently. It is a positive sign in the market for buyers.
+
+
+***SCATTERPLOT***
+
+```{r scatterplot, echo=TRUE}
+ggplot(spy500_data, aes(x = Volume, y = Close)) +
+  geom_point(color = "red") +
+  labs(title = "Scatter Plot of Closing Prices vs. Trading Volume", 
+       x = "Trading Volume", 
+       y = "Closing Price") +
+  theme_minimal()
+```
+
+### Scatterplot of Closing Prices vs. Trading Volume
+
+
+The scatterplot of SPY closing prices versus trading volume helps in understanding how these two variables interact.
+
+Description:
+X-Axis: Represents the trading volume.
+Y-Axis: Represents the closing prices of SPY.
+Points: Each point represents a day’s closing price and the corresponding trading volume.
+
+
+The pattern of points can indicate whether there is a positive, negative, or no correlation between trading volume and closing prices. Clusters of points can indicate typical trading behaviors. For example, high volumes might cluster around certain price ranges. Points that are far from the cluster can indicate unusual trading activity, such as a day with very high volume and an abnormal closing price.
+
+Example: There is no clear pattern, it indicates that volume and price do not have a direct relationship in this dataset.
+
+***TIMESERIES PLOT***
+
+```{r timeseries, echo=TRUE}
+ggplot(spy500_data, aes(x = Date, y = Close)) +
+  geom_line(color = "blue") +
+  labs(title = "Time Series of Closing Prices", 
+       x = "Date", 
+       y = "Closing Price") +
+  theme_minimal()
+```
+
+
+### Time series plot 
+
+
+It shows the trend of SPY's closing prices over the observed period(past 1 year).
+The plot shows how the closing prices change over time, highlighting periods of rise, fall, and stability.
+It helps in understanding the performance and volatility of SPY over the specified period and long term trends can be identified. Peaks and fall in the plot can indicate significant market events or trends.
+
+Example : In Mid-November-2023, there is a fall. This could be due to specific events such as economic policy changes, interest rate announcements, or major geopolitical events. But the prices show recovery towards the end of November, indicating market stabilization after the initial shock.
+
+
+
+
+
